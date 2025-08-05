@@ -14,72 +14,87 @@ export function EligibilityChecks() {
     const params = new FormData(form);
 
     axios.post("verify.json", params)
-    .then((response) => {
-      console.log("Eligibility checked:", response.data);
-      const id = response.data.id;
-      console.log(id);
-      form.reset();
-      navigate(`/members/${id}`);
-    })
-    .catch((error) => {
-      console.log(error.response.data.errors);
-      setErrors(error.response.data.errors);
-    });
+      .then((response) => {
+        const id = response.data.id;
+        form.reset();
+        navigate(`/members/${id}`);
+      })
+      .catch((error) => {
+        setErrors(error.response.data.errors);
+      });
   };
-  
+
   return (
-    <div>
-      <h2>New Eligibility Search</h2>
+    <div className="container my-5">
+      <h2 className="mb-4">New Eligibility Search</h2>
+
       {errors.length > 0 && (
-        <ul>
-          {errors.map((e, i) => (
-            <li key={i} style={{ color: "red" }}>{e}</li>
-          ))}
-        </ul>
+        <div className="alert alert-danger">
+          <ul className="mb-0">
+            {errors.map((e, i) => (
+              <li key={i}>{e}</li>
+            ))}
+          </ul>
+        </div>
       )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          External Member ID (optional): <input
-            type="text"
-            name="external_member_id"
-            placeholder="11111111"
-            defaultValue={member?.external_member_id || ""}
-          />
+
+      <div className="card shadow">
+        <div className="card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">External Member ID (optional)</label>
+              <input
+                type="text"
+                name="external_member_id"
+                className="form-control"
+                placeholder="11111111"
+                defaultValue={member?.external_member_id || ""}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">First Name</label>
+              <input
+                type="text"
+                name="first_name"
+                className="form-control"
+                placeholder="John"
+                defaultValue={member?.first_name || ""}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Last Name</label>
+              <input
+                type="text"
+                name="last_name"
+                className="form-control"
+                placeholder="Smith"
+                defaultValue={member?.last_name || ""}
+              />
+            </div>
+            <div className="mb-3">
+              <label className="form-label">Date of Birth</label>
+              <input
+                type="text"
+                name="dob"
+                className="form-control"
+                placeholder="1974-09-16"
+                defaultValue={member?.dob || ""}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="form-label">Zip Code</label>
+              <input
+                type="text"
+                name="zip"
+                className="form-control"
+                placeholder="99911"
+                defaultValue={member?.zip || ""}
+              />
+            </div>
+            <button type="submit" className="btn btn-warning w-100">Check Coverage</button>
+          </form>
         </div>
-        <div>
-          First Name: <input
-            type="text"
-            name="first_name"
-            placeholder="John"
-            defaultValue={member?.first_name || ""}
-          />
-        </div>
-        <div>
-          Last Name: <input
-            type="text"
-            name="last_name"
-            placeholder="Smith"
-            defaultValue={member?.last_name || ""}
-          />
-        </div>
-        <div>
-          Date of Birth: <input
-            type="text"
-            name="dob"
-            placeholder="1974-09-16"
-            defaultValue={member?.dob || ""}
-          />
-        </div>
-        <div>
-          Zip Code: <input
-            type="text"
-            name="zip"
-            placeholder="99911"
-            defaultValue={member?.zip || ""}
-          />
-        </div>
-        <button type="submit">Check Coverage</button>
-      </form>
+      </div>
     </div>
-  )
+  );
 }

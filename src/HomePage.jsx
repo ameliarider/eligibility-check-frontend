@@ -1,16 +1,24 @@
 export function HomePage() {
   return (
-    <div>
-      <h1>Guide to Eligibility Check App</h1>
-      <ol>
-        <li><strong>Required:</strong> Log in to the website to access member data. Contact administrator if you need login credentials.</li>
-        <li><strong>For a new eligibility check:</strong> Navigate to the "eligibility checks" tab in the navbar.</li>
-        <li>Enter member information to submit new check.</li>
-        <li>Once checked, you will automatically be directed to the members page with their eligibility info and previous checks (if any exist).</li>
-        <li><strong>For an existing member:</strong> Navigate to the "members tab in the navbar.</li>
-        <li>Use the search bar to find the member by external member ID or scroll through members to find.</li>
-        <li>To recheck coverage, click "re-check" button on their member information page.</li>
-      </ol>
+    <div className="container my-5">
+      <div className="text-center mb-4">
+        <h1>Welcome to the Eligibility Check App</h1>
+        <p className="lead text-muted">Use the app to search and recheck member eligibility.</p>
+      </div>
+
+      <div className="card shadow-sm">
+        <div className="card-body">
+          <h5 className="card-title">How to Use:</h5>
+          <ol className="lh-lg">
+            <li><strong>Login:</strong> You must be logged in to access member data. Contact admin for credentials.</li>
+            <li><strong>Start a Check:</strong> Use the <span className="text-warning fw-bold">"Eligibility Check"</span> tab to submit new checks.</li>
+            <li>Enter member details and submit to check their coverage.</li>
+            <li>You'll be taken directly to that member’s detail page after a successful check.</li>
+            <li><strong>View Existing Members:</strong> Use the <span className="text-warning fw-bold">"Members"</span> tab to browse or search for members.</li>
+            <li>Recheck their status anytime using the buttons on their page.</li>
+          </ol>
+        </div>
+      </div>
     </div>
-  )
+  );
 }

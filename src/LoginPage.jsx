@@ -5,8 +5,6 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 export function LoginPage() {
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
-  // useOutletContext gets data passed from the parent Layout component
-  // This gives us access to setIsLoggedIn so we can update the auth state after login
   const { setIsLoggedIn } = useOutletContext();
 
   const handleSubmit = (event) => {
@@ -16,35 +14,43 @@ export function LoginPage() {
     axios
       .post("/login.json", params)
       .then((response) => {
-        console.log(response.data);
         localStorage.setItem("email", response.data.email);
-        setIsLoggedIn(true); // Update the authentication state
+        setIsLoggedIn(true);
         event.target.reset();
-        navigate("/members"); // Navigate to members page after successful login
+        navigate("/members");
       })
-      .catch((error) => {
-        console.log(error.response);
+      .catch(() => {
         setErrors(["Invalid email or password"]);
       });
   };
 
   return (
-    <div id="login">
-      <h1>Login</h1>
-      <ul>
-        {errors.map((error) => (
-          <li key={error}>{error}</li>
-        ))}
-      </ul>
-      <form onSubmit={handleSubmit}>
-        <div>
-          Email: <input name="email" type="email" />
-        </div>
-        <div>
-          Password: <input name="password" type="password" />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "80vh" }}>
+      <div className="card shadow p-4" style={{ maxWidth: "400px", width: "100%" }}>
+        <h2 className="text-center mb-4">Login</h2>
+
+        {errors.length > 0 && (
+          <div className="alert alert-danger">
+            <ul className="mb-0">
+              {errors.map((error, i) => (
+                <li key={i}>{error}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <input name="email" type="email" className="form-control" required />
+          </div>
+          <div className="mb-4">
+            <label className="form-label">Password</label>
+            <input name="password" type="password" className="form-control" required />
+          </div>
+          <button type="submit" className="btn btn-warning w-100">Log In</button>
+        </form>
+      </div>
     </div>
   );
 }

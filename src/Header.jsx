@@ -4,8 +4,8 @@ import { LogoutLink } from "./LogoutLink";
 export function Header({ isLoggedIn, setIsLoggedIn }) {
   return (
     <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light px-4">
-        <Link className="navbar-brand" to="/">Eligibility Check App</Link>
+      <nav className="navbar navbar-expand-lg navbar-dark bg-orange px-4">
+        <Link className="navbar-brand text-white fw-bold" to="/">Eligibility App</Link>
 
         <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
@@ -16,10 +16,10 @@ export function Header({ isLoggedIn, setIsLoggedIn }) {
             {isLoggedIn ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/members">Members</Link>
+                  <Link className="nav-link text-white" to="/members">Members</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/eligibilitycheck">Eligibility Check</Link>
+                  <Link className="nav-link text-white" to="/eligibilitycheck">Eligibility Check</Link>
                 </li>
                 <li className="nav-item">
                   <LogoutLink setIsLoggedIn={setIsLoggedIn} />
@@ -27,7 +27,7 @@ export function Header({ isLoggedIn, setIsLoggedIn }) {
               </>
             ) : (
               <li className="nav-item">
-                <Link className="nav-link" to="/login">Login</Link>
+                <Link className="nav-link text-white" to="/login">Login</Link>
               </li>
             )}
           </ul>

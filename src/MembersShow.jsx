@@ -10,16 +10,14 @@ export function MembersShow() {
   
   useEffect(() => {
     axios.get(`members/${id}.json`).then((response) => {
-      console.log(response.data);
       setMember(response.data);
     });
     axios.get("/eligibility_checks.json").then((response) => {
-      console.log(response.data);
       setEligibilityChecks(response.data);
-    })
+    });
   }, [id]);
 
-  if (!member) return <div>Loading...</div>;
+  if (!member) return <div className="text-center my-5">Loading...</div>;
 
   const handleEligibilityCheck = () => {
     axios.post("/verify.json", { 
@@ -31,48 +29,79 @@ export function MembersShow() {
       group_number: member.group_number
      })
       .then(() => {
-        // Re-fetch full member record from original endpoint
         axios.get(`members/${id}.json`).then((response) => {
           setMember(response.data);
         });
         axios.get("/eligibility_checks.json").then((response) => {
-          console.log(response.data);
           setEligibilityChecks(response.data);
-        })
+        });
       })
       .catch((error) => {
         console.error("Eligibility check failed:", error);
       });
   };
 
-
   return (
-    <div>
-      <h2>{member.first_name} {member.last_name}</h2>
-      <p>DOB: {member.dob}</p>
-      <p>External member id: {member.external_member_id}</p>
-      <p>Zip: {member.zip}</p>
-      <p>Group number: {member.group_number}</p>
-      <p>Active: {member.active ? "Yes" : "No"}</p>
-      <p>Terminated at: {member.terminated_at}</p>
-      <button
-        onClick={handleEligibilityCheck}
-      >
-        Check Coverage
-      </button>
-      <button onClick={() => navigate("/eligibilitycheck", { state: { member } })} >Check Coverage with New Member Info</button>
-      <div>
-        <h3>Coverage Checks</h3>
-        {eligibilityChecks
-        .filter((check) => check.member_id === member.id)
-        .map((check) => (
-          <div key={check.id}>
-            <p><strong>Date:</strong> {check.created_at} Active: {check.active ? "Yes" : "No"}</p>
-          </div>
-        ))}
-      </div>
-      <button onClick={() => navigate("/members")}>Back to All Members</button>
-    </div>
+    <div className="container my-5">
+      <div className="card shadow">
+        <div className="card-body">
+          <h2 className="card-title">
+            {member.first_name} {member.last_name}
+            {" "}
+            {member.active ? (
+              <span className="badge bg-success">Active</span>
+            ) : (
+              <span className="badge bg-secondary">Terminated</span>
+            )}
+          </h2>
+          <p><strong>Date of Birth:</strong> {member.dob}</p>
+          <p><strong>External Member ID:</strong> {member.external_member_id}</p>
+          <p><strong>Zip:</strong> {member.zip}</p>
+          <p><strong>Group Number:</strong> {member.group_number}</p>
+          {member.terminated_at && <p><strong>Terminated At:</strong> {member.terminated_at}</p>}
 
-  )
+          <div className="d-flex flex-wrap gap-2 my-4">
+            <button onClick={handleEligibilityCheck} className="btn btn-warning">
+              Re-check Coverage
+            </button>
+            <button
+              onClick={() => navigate("/eligibilitycheck", { state: { member } })}
+              className="btn btn-outline-warning"
+            >
+              Check Coverage with New Info
+            </button>
+            <button
+              onClick={() => navigate("/members")}
+              className="btn btn-secondary"
+            >
+              Back to All Members
+            </button>
+          </div>
+
+          <hr />
+          <h4>Coverage Checks</h4>
+          {eligibilityChecks.filter(check => check.member_id === member.id).length === 0 ? (
+            <p>No checks yet.</p>
+          ) : (
+            eligibilityChecks
+              .filter(check => check.member_id === member.id)
+              .map((check) => (
+                <div key={check.id} className="border rounded p-2 my-2">
+                  <p className="mb-0">
+                    <strong>Date:</strong> {new Date(check.created_at).toLocaleString()}
+                    {" | "}
+                    <strong>Status:</strong>{" "}
+                    {check.active ? (
+                      <span className="text-success">Active</span>
+                    ) : (
+                      <span className="text-danger">Inactive</span>
+                    )}
+                  </p>
+                </div>
+              ))
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
