@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 export function EligibilityChecks() {
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const member = location.state?.member || null;
@@ -21,20 +21,20 @@ export function EligibilityChecks() {
       })
       .catch((error) => {
         setErrors(error.response.data.errors);
+        // console.log(error.response.data.errors);
       });
+      console.log(errors);
   };
 
   return (
     <div className="container my-5">
       <h2 className="mb-4">New Eligibility Search</h2>
 
-      {errors.length > 0 && (
+      {errors && (
         <div className="alert alert-danger">
-          <ul className="mb-0">
-            {errors.map((e, i) => (
-              <li key={i}>{e}</li>
-            ))}
-          </ul>
+          <p className="mb-0">
+            {errors}
+          </p>
         </div>
       )}
 
@@ -52,43 +52,48 @@ export function EligibilityChecks() {
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">First Name</label>
+              <label className="form-label required-field">First Name</label>
               <input
                 type="text"
                 name="first_name"
                 className="form-control"
                 placeholder="John"
                 defaultValue={member?.first_name || ""}
+                required
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">Last Name</label>
+              <label className="form-label required-field">Last Name</label>
               <input
                 type="text"
                 name="last_name"
                 className="form-control"
                 placeholder="Smith"
                 defaultValue={member?.last_name || ""}
+                required
               />
             </div>
             <div className="mb-3">
-              <label className="form-label">Date of Birth</label>
+              <label className="form-label required-field">Date of Birth</label>
               <input
-                type="text"
+                type="date"
+                min="1900-01-01" max="2000-12-31"
                 name="dob"
                 className="form-control"
                 placeholder="1974-09-16"
                 defaultValue={member?.dob || ""}
+                required
               />
             </div>
             <div className="mb-4">
-              <label className="form-label">Zip Code</label>
+              <label className="form-label required-field">Zip Code</label>
               <input
                 type="text"
                 name="zip"
                 className="form-control"
                 placeholder="99911"
                 defaultValue={member?.zip || ""}
+                required
               />
             </div>
             <button type="submit" className="btn btn-warning w-100">Check Coverage</button>

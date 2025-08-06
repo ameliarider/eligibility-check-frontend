@@ -1,13 +1,15 @@
 export function HomePage() {
   return (
     <div className="container my-5">
-      <div className="text-center mb-4">
-        <h1>Welcome to the Eligibility Check App</h1>
-        <p className="lead text-muted">Use the app to search and recheck member eligibility.</p>
+      <div className="mb-4">
+        <h1 className="text-start">Welcome to the Eligibility Check App</h1>
+        <p className="lead text-muted text-start">
+          Use the app to search and recheck member eligibility.
+        </p>
       </div>
 
       <div className="card shadow-sm">
-        <div className="card-body">
+        <div className="card-body text-start">
           <h5 className="card-title">How to Use:</h5>
           <ol className="lh-lg">
             <li><strong>Login:</strong> You must be logged in to access member data. Contact admin for credentials.</li>

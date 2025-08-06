@@ -89,3 +89,12 @@
 .alert ul {
   margin-bottom: 0;
 }
+
+.required-field::after {
+  content: "*";
+  /* Inserts the asterisk character */
+  color: red;
+  /* Sets the color to red */
+  margin-left: 4px;
+  /* Optional: adds a small space after the label */
+}
